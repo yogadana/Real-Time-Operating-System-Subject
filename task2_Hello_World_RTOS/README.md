@@ -9,9 +9,11 @@ This project demonstrates the creation and management of multiple tasks using RT
   - [pickButton Task](#pickbutton-task)
   - [getADC Task](#getadc-task)
   - [LED_LVL Task](#led_lvl-task)
-  - [dispUART Task](#disp_uart-task)
+  - [dispUART Task](#dispuart-task)
 - [Important Notes](#important-notes)
-- [Configuration](#configuration)
+- [Hardware Configurations](#hardware-configuration)
+- [Demonstration Video](#demonstration-video)
+- [Author](#author)
 
 ## Task Configurations
 
@@ -178,4 +180,6 @@ The .ioc configuration file is used to initialize and set up the project. Key co
 https://github.com/user-attachments/assets/18828054-0750-439d-96a9-19b5cc5db68d
 
 
-
+## Author
+- Dana Yoga Setya Ikhwandi (3222600016)
+- Nio Perdana Azizudin (3222600022)
