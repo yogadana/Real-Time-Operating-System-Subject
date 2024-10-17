@@ -41,19 +41,26 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-/* Definitions for GreenLedTask */
-osThreadId_t GreenLedTaskHandle;
-const osThreadAttr_t GreenLedTask_attributes = {
-  .name = "GreenLedTask",
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for RedLedTask */
-osThreadId_t RedLedTaskHandle;
-const osThreadAttr_t RedLedTask_attributes = {
-  .name = "RedLedTask",
+/* Definitions for FlashGreenLedTa */
+osThreadId_t FlashGreenLedTaHandle;
+const osThreadAttr_t FlashGreenLedTa_attributes = {
+  .name = "FlashGreenLedTa",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for FlashRedLedTask */
+osThreadId_t FlashRedLedTaskHandle;
+const osThreadAttr_t FlashRedLedTask_attributes = {
+  .name = "FlashRedLedTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -62,8 +69,9 @@ const osThreadAttr_t RedLedTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-void FlashGreenLedTask(void *argument);
-void FlashRedLedTask(void *argument);
+void StartDefaultTask(void *argument);
+void FlashGreenLed(void *argument);
+void FlashRedLed(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -127,11 +135,14 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of GreenLedTask */
-  GreenLedTaskHandle = osThreadNew(FlashGreenLedTask, NULL, &GreenLedTask_attributes);
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of RedLedTask */
-  RedLedTaskHandle = osThreadNew(FlashRedLedTask, NULL, &RedLedTask_attributes);
+  /* creation of FlashGreenLedTa */
+  FlashGreenLedTaHandle = osThreadNew(FlashGreenLed, NULL, &FlashGreenLedTa_attributes);
+
+  /* creation of FlashRedLedTask */
+  FlashRedLedTaskHandle = osThreadNew(FlashRedLed, NULL, &FlashRedLedTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -169,7 +180,7 @@ void SystemClock_Config(void)
   /** Configure the main internal regulator output voltage
   */
   __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -178,8 +189,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 25;
-  RCC_OscInitStruct.PLL.PLLN = 168;
+  RCC_OscInitStruct.PLL.PLLM = 12;
+  RCC_OscInitStruct.PLL.PLLN = 96;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -196,7 +207,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -216,7 +227,6 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED_GREEN_Pin|LED_BLUE_Pin|LED_RED_Pin|LED_ORANGE_Pin, GPIO_PIN_RESET);
@@ -236,69 +246,85 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_FlashGreenLedTask */
+/* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the GreenLedTask thread.
+  * @brief  Function implementing the defaultTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_FlashGreenLedTask */
-void FlashGreenLedTask(void *argument)
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
-	HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, RESET);
-	// 4 second
-	for (int i = 0; i < 160; ++i)
-	{
-		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, SET);
-		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-		HAL_Delay(25);
-	}
-
-	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, RESET);
-	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, RESET);
-
-    osDelay(6000);
+    osDelay(1);
   }
   /* USER CODE END 5 */
 }
 
-/* USER CODE BEGIN Header_FlashRedLedTask */
+/* USER CODE BEGIN Header_FlashGreenLed */
 /**
-* @brief Function implementing the RedLedTask thread.
+* @brief Function implementing the FlashGreenLedTa thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_FlashRedLedTask */
-void FlashRedLedTask(void *argument)
+/* USER CODE END Header_FlashGreenLed */
+void FlashGreenLed(void *argument)
 {
-  /* USER CODE BEGIN FlashRedLedTask */
+  /* USER CODE BEGIN FlashGreenLed */
   /* Infinite loop */
-  for(;;)
-  {
-	HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, RESET);
+	for(;;)
+	{
+		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, SET);
+		// 4 second
+		for (int i = 0; i < 160; ++i)
+		{
+			HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+			HAL_Delay(25);
+		}
 
-	for (int i = 0; i < 20; ++i)
+		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, RESET);
+		HAL_GPIO_WritePin(LED_BLUE_GPIO_Port, LED_BLUE_Pin, RESET);
+
+		osDelay(6000);
+	}
+  /* USER CODE END FlashGreenLed */
+}
+
+/* USER CODE BEGIN Header_FlashRedLed */
+/**
+* @brief Function implementing the FlashRedLedTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_FlashRedLed */
+void FlashRedLed(void *argument)
+{
+  /* USER CODE BEGIN FlashRedLed */
+  /* Infinite loop */
+	for(;;)
 	{
 		HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, SET);
-		HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
-		HAL_Delay(25);
+
+		for (int i = 0; i < 20; ++i)
+		{
+			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+			HAL_Delay(25);
+		}
+
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
+		HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, RESET);
+
+		osDelay(1500);
 	}
-
-	HAL_GPIO_WritePin(LED_RED_GPIO_Port, LED_RED_Pin, RESET);
-	HAL_GPIO_WritePin(LED_ORANGE_GPIO_Port, LED_ORANGE_Pin, RESET);
-
-	osDelay(1500);
-  }
-  /* USER CODE END FlashRedLedTask */
+  /* USER CODE END FlashRedLed */
 }
 
 /**
   * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM2 interrupt took place, inside
+  * @note   This function is called  when TIM4 interrupt took place, inside
   * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
   * a global variable "uwTick" used as application time base.
   * @param  htim : TIM handle
@@ -309,7 +335,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM2) {
+  if (htim->Instance == TIM4) {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */

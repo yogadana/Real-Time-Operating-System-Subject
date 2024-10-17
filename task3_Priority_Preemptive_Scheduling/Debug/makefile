@@ -38,34 +38,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := task3
+BUILD_ARTIFACT_NAME := task3_Priority_Preemptive_Scheduling
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-task3.elf \
+task3_Priority_Preemptive_Scheduling.elf \
 
 MAP_FILES += \
-task3.map \
+task3_Priority_Preemptive_Scheduling.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-task3.list \
+task3_Priority_Preemptive_Scheduling.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: task3.elf secondary-outputs
+main-build: task3_Priority_Preemptive_Scheduling.elf secondary-outputs
 
 # Tool invocations
-task3.elf task3.map: $(OBJS) $(USER_OBJS) C:\Users\io\Documents\sem5\real_time_operating_system\Real-Time-Operating-System-Subject\task3\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "task3.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\io\Documents\sem5\real_time_operating_system\Real-Time-Operating-System-Subject\task3\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="task3.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+task3_Priority_Preemptive_Scheduling.elf task3_Priority_Preemptive_Scheduling.map: $(OBJS) $(USER_OBJS) D:\kuliah\semester5\RTOS\task3\task3_Priority_Preemptive_Scheduling\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "task3_Priority_Preemptive_Scheduling.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\kuliah\semester5\RTOS\task3\task3_Priority_Preemptive_Scheduling\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="task3_Priority_Preemptive_Scheduling.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -74,14 +74,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-task3.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "task3.list"
+task3_Priority_Preemptive_Scheduling.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "task3_Priority_Preemptive_Scheduling.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout task3.elf task3.list task3.map
+	-$(RM) default.size.stdout task3_Priority_Preemptive_Scheduling.elf task3_Priority_Preemptive_Scheduling.list task3_Priority_Preemptive_Scheduling.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

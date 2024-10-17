@@ -1,7 +1,8 @@
-../Core/Src/main.c:81:5:main	8	static
-../Core/Src/main.c:164:6:SystemClock_Config	88	static
-../Core/Src/main.c:210:13:MX_GPIO_Init	40	static
-../Core/Src/main.c:246:6:FlashGreenLedTask	24	static
-../Core/Src/main.c:276:6:FlashRedLedTask	24	static
-../Core/Src/main.c:307:6:HAL_TIM_PeriodElapsedCallback	16	static
-../Core/Src/main.c:324:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:89:5:main	8	static
+../Core/Src/main.c:175:6:SystemClock_Config	88	static
+../Core/Src/main.c:221:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:256:6:StartDefaultTask	16	static
+../Core/Src/main.c:274:6:FlashGreenLed	24	static
+../Core/Src/main.c:303:6:FlashRedLed	24	static
+../Core/Src/main.c:333:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:350:6:Error_Handler	4	static,ignoring_inline_asm
