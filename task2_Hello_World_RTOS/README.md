@@ -170,4 +170,11 @@ The .ioc configuration file is used to initialize and set up the project. Key co
 
 ![alt text](https://github.com/yogadana/Real-Time-Operating-System-Subject/blob/main/task2_Hello_World_RTOS/ioc.png?raw=true "ioc")
 
-![alt text](https://github.com/yogadana/Real-Time-Operating-System-Subject/blob/main/task2_Hello_World_RTOS/hardware.jpg?raw=true "hardware")
+![image](https://github.com/user-attachments/assets/d644f3a2-7c7f-4795-a54b-40a0f66d3b7d)
+
+## Demonstration Video
+
+https://github.com/user-attachments/assets/18828054-0750-439d-96a9-19b5cc5db68d
+
+
+
