@@ -1,5 +1,9 @@
 # Task Relationship Analysis
-In priority preemptive scheduling, higher-priority tasks will take over lower-priority tasks that are currently running. If a higher-priority task is ready to run, the scheduler will preempt the lower-priority task and execute the higher-priority task.
+In priority preemptive scheduling, higher-priority tasks will take over lower-priority tasks that are currently running. If a higher-priority task is ready to run, the scheduler will preempt the lower-priority task and execute the higher-priority task. In this practical session, we are using 4 LEDs connected with stm pins A3, A4, A5, and A6 also with resistors which are connected to ground.
+
+![image](https://github.com/user-attachments/assets/585b5c1a-ccce-499e-89ac-75113b4cfa9b) ![image](https://github.com/user-attachments/assets/4b9f4758-d6e2-4b0c-ac11-a949244fb746)
+
+
 
 ## a. Priority Settings
 In the code found in this repository, each task in this project is assigned a different priority. In this program, the task for blinking the LED for 0.5 seconds using the `FlashRedLed()` function has a higher priority than the task for blinking the LED for 4 seconds using the `FlashGreenLed()` function. With preemptive scheduling, when the higher-priority task is ready to be executed, the currently running lower-priority task will be suspended and resumed only after the higher-priority task is finished or enters a `Blocked`/`Suspended` state.
