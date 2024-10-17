@@ -167,6 +167,7 @@ This task handles serial communication. It transmits the current ADC voltage (`x
 
 ## Hardware Configuration
 The .ioc configuration file is used to initialize and set up the project. Key configurations include setting up the ADC, GPIO, UART, and assigning the timebase to TIM4 instead of SysTick for proper RTOS scheduling.
+
 ![alt text](https://github.com/yogadana/Real-Time-Operating-System-Subject/blob/main/task2_Hello_World_RTOS/ioc.png?raw=true "ioc")
 
 ![alt text](https://github.com/yogadana/Real-Time-Operating-System-Subject/blob/main/task2_Hello_World_RTOS/hardware.jpg?raw=true "hardware")
