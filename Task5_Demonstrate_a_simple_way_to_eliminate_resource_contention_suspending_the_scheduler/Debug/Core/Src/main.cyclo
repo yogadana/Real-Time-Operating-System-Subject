@@ -1,0 +1,11 @@
+../Core/Src/main.c:77:10:millis	1
+../Core/Src/main.c:81:6:Delay_ms	2
+../Core/Src/main.c:91:6:accessData	2
+../Core/Src/main.c:119:5:main	1
+../Core/Src/main.c:205:6:SystemClock_Config	3
+../Core/Src/main.c:251:13:MX_GPIO_Init	1
+../Core/Src/main.c:297:6:StartDefaultTask	1
+../Core/Src/main.c:315:6:RelLedFlash	1
+../Core/Src/main.c:336:6:GreenLedFlash	1
+../Core/Src/main.c:358:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Src/main.c:375:6:Error_Handler	1
